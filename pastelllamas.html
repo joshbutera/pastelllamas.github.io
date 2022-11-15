@@ -48,7 +48,7 @@
       background-color: #EDF6F9;
    }
    .tooltip {
-      position: fixed;
+      position: relative;
       background: #83C5BE;
       border-radius: 3px;
       border: 1px solid #006D77;
@@ -94,13 +94,13 @@
    var variableOptions = ["gdp_per_capita", "family", "health", "freedom", "generosity", "government_trust", "cpi_score"]
    let scatterVar = variableOptions[0]
 
+   d3.select(".content").append("span").attr("class", "tooltip").text("This is a tooltip.")
    var scatter_plot = d3.select(".content").append("svg")
       .attr("id", "scatter_plot")
       .style("height", raw_height)
       .style("width", raw_width)
       .append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")")
    
-   scatter_plot.append("span").attr("class", "tooltip").text("This is a tooltip.")
 
    d3.select("#scatterSelection")
       .selectAll('myOptions')
@@ -137,7 +137,8 @@
       var points = d3.map(dataset[year], function(d) { 
          return {
             x: d[x_slection],
-            y: d[y_selection]
+            y: d[y_selection],
+            'country': d['Country']
          }
       })
 
@@ -188,16 +189,18 @@
          .text("Happiness Score");
 
       scatter_plot.selectAll("circle")
-         .data(dataset[year])
+         .data(points)
          .join(
             enter => enter.append("circle")
                .on("mouseover", function(event, d) {
+                  console.log(event)
                   d3.select(this).attr("fill", "#E29578")
+                  console.log(yScale(d.y))
                   d3.select(".tooltip")
-                     .style('left', xScale(d[x_slection]) + margin.left + 5 + 'px')
-                     .style('top', yScale(d[y_selection]) + 15 + 'px')
+                     .style("top", (event.pageY-160)+"px")
+                     .style("left",(event.pageX)+"px")
                      .style('visibility', 'visible')
-                     .text(d['Country'])
+                     .text(d.country)
                })
                .on("mouseout", function(event, d) {
                   d3.select(this).attr("fill", "#006D77")
@@ -207,14 +210,14 @@
                .transition()
                .delay((d, i) => 10 * i)
                .duration(600)
-               .attr("cx", d => xScale(d[x_slection]))
-               .attr("cy", d => yScale(d[y_selection]))
+               .attr("cx", d => xScale(d.x))
+               .attr("cy", d => yScale(d.y))
                .attr("r", 3)
                .attr("fill", "#006D77"),
             update => update
                .transition(t)
-               .attr("cx", d => xScale(d[x_slection]))
-               .attr("cy", d => yScale(d[y_selection])),
+               .attr("cx", d => xScale(d.x))
+               .attr("cy", d => yScale(d.y)),
             exit => exit
                .remove()
          )
