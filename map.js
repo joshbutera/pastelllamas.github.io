@@ -68,8 +68,6 @@ function drawMap(countries, year) {
       countries.features[i].happiness_scores = happiness_scores; 
       min = Number(min)
       max = Number(max)
-      
-      console.log(min, max)
    }
 
    const countryColorScale = d3.scaleLinear()
