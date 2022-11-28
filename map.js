@@ -110,6 +110,18 @@ function drawMap(countries, year) {
    world_map.append("rect")
       .attr("width", 20)
       .attr("height", 300)
-      .attr("transform", "translate(" + 980 + "," + 0 + ")")
+      .attr("transform", "translate(" + 1000 + "," + 0 + ")")
       .style("fill", "url(#linear-gradient)");
+   
+   world_map.append("text")
+      .attr("x", 0)
+      .attr("y", -1030)
+      .attr("transform", "rotate(90)")
+      .text("Most Happy")
+   
+   world_map.append("text")
+      .attr("x", 210)
+      .attr("y", -980)
+      .attr("transform", "rotate(90)")
+      .text("Least Happy")
 }
