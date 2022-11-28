@@ -48,7 +48,7 @@
       background-color: #EDF6F9;
    }
    .tooltip {
-      position: fixed;
+      position: relative;
       background: #83C5BE;
       border-radius: 3px;
       border: 1px solid #006D77;
@@ -62,12 +62,15 @@
 
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="https://unpkg.com/simple-statistics@7.8.0/dist/simple-statistics.min.js"></script>
+<script src="/scatterplot.js"></script>
+<script src="/barchart.js"></script>
 
 <script>
    // Open up on a map of the world with circles representing happiness for each country in the report
    // scrollytelling to show explanations for happiness
    // bottom of page has corruption/happiness where user can select up to certain amount of countries to view happiness over time
 
+   // Function to figure out the width of the page.
    function getWidth() {
       return Math.max(
          document.body.scrollWidth,
@@ -75,7 +78,7 @@
          document.body.offsetWidth,
          document.documentElement.offsetWidth,
          document.documentElement.clientWidth
-      );
+      )
    }
    var margin = { top: 20, right: 150, bottom: 60, left: 150 };
    var raw_width = getWidth()
@@ -94,14 +97,15 @@
    var variableOptions = ["gdp_per_capita", "family", "health", "freedom", "generosity", "government_trust", "cpi_score"]
    let scatterVar = variableOptions[0]
 
+   // Initialize the tooltip elements.
+   d3.select(".content").append("span").attr("class", "tooltip")
    var scatter_plot = d3.select(".content").append("svg")
       .attr("id", "scatter_plot")
       .style("height", raw_height)
       .style("width", raw_width)
       .append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")")
    
-   scatter_plot.append("span").attr("class", "tooltip").text("This is a tooltip.")
-
+   // Initialize the dropdown menu elements.
    d3.select("#scatterSelection")
       .selectAll('myOptions')
      	.data(variableOptions)
@@ -109,174 +113,28 @@
     	.append('option')
       .text(function (d) { return d; }) // text showed in the menu
       .attr("value", function (d) { return d; }) // corresponding value returned by the button
-
-   d3.select("#scatterSelection").on("change", function(d) {
-      var selectedOption = d3.select(this).property("value")
-      scatterVar = selectedOption
-      drawScatterPlot()
-    })
    
+   // Checks when the value of the dropdown menu is changed.
+   d3.select("#scatterSelection").on("change", function(d) {
+      scatterVar = d3.select(this).property("value")
+      drawScatterPlot(scatterVar, dataset)
+   })
+   
+   // Initialize the bar chart elements.
    var bar_chart = d3.select(".content").append("svg")
       .style("height", 1800)
       .style("width", getWidth())
       .append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")")
 
-   function aggregateByYear() {
+   // Ready function to initialize the page.
+   async function ready() {
+      data = await d3.csv("WorldHappinessData.csv"); // load csv data
       data.forEach(d => {
-         dataset[Number(d['Year'])].push(d)
-      });
-   }
-
-   function drawScatterPlot() {
-      year = 2015
-      y_selection = scatterVar
-      x_slection = 'happiness_score'
-      t = d3.transition()
-	      .duration(500);
-
-      var points = d3.map(dataset[year], function(d) { 
-         return {
-            x: d[x_slection],
-            y: d[y_selection]
-         }
+         dataset[Number(d['Year'])].push(d) // aggregate data by year
       })
 
-      var x_vals = d3.map(dataset[year], d => d['happiness_score'])
-      var y_vals = d3.map(dataset[year], d => d['cpi_score'])
-
-      var xScale = d3.scaleLinear().domain([0, d3.max(points, d => d.x)] ).range([0, width])
-      var yScale = d3.scaleLinear().domain([0, d3.max(points, d => d.y)] ).range([height, 0])
-
-      linearRegression = ss.linearRegression(points.map(d => [Number(d.x), Number(d.y)]))
-      linearRegressionLine = ss.linearRegressionLine(linearRegression)
-      x_intercept =  d3.max([Number(points[0].x) - (linearRegressionLine( Number(points[0].x)) / linearRegression.m), 0])
-
-      const xCoordinates = [x_intercept, d3.max(points, d=>d.x)];
-      
-      regressionPoints = xCoordinates.map(d => ({
-         x: d,                         // We pick x and y arbitrarily, just make sure they match d3.line accessors
-         y: linearRegressionLine(d)
-      }));
-
-      line = d3.line()
-         .x(d => xScale(d.x))
-         .y(d => yScale(d.y))
-
-      d3.selectAll('.scatter-axis').remove()
-      var xAxis = d3.axisBottom()
-      .scale(xScale); 
-      var yAxis = d3.axisLeft()
-      .scale(yScale);
-
-      scatter_plot.append("g")
-      .attr("class", "scatter-axis")
-      .attr("transform", "translate(0, " + height + ")")
-      .call(xAxis)
-
-      scatter_plot.append("g")
-      .attr("class", "scatter-axis")
-      .call(yAxis)
-
-      d3.selectAll(".scatter-axis > g").remove()
-
-      d3.select("#scatter-x-axis-label").remove()
-      scatter_plot.append("g")
-         .attr('id', 'scatter-x-axis-label')
-         .attr('transform', 'translate(' + (width/2) + ', ' + (height+35) + ')')
-         .append("text")
-         .attr("text-anchor", "middle")
-         .text("Happiness Score");
-
-      scatter_plot.selectAll("circle")
-         .data(dataset[year])
-         .join(
-            enter => enter.append("circle")
-               .on("mouseover", function(event, d) {
-                  d3.select(this).attr("fill", "#E29578")
-                  d3.select(".tooltip")
-                     .style('left', xScale(d[x_slection]) + margin.left + 5 + 'px')
-                     .style('top', yScale(d[y_selection]) + 15 + 'px')
-                     .style('visibility', 'visible')
-                     .text(d['Country'])
-               })
-               .on("mouseout", function(event, d) {
-                  d3.select(this).attr("fill", "#006D77")
-                  d3.select(".tooltip")
-                     .style('visibility', 'hidden')
-               })
-               .transition()
-               .delay((d, i) => 10 * i)
-               .duration(600)
-               .attr("cx", d => xScale(d[x_slection]))
-               .attr("cy", d => yScale(d[y_selection]))
-               .attr("r", 3)
-               .attr("fill", "#006D77"),
-            update => update
-               .transition(t)
-               .attr("cx", d => xScale(d[x_slection]))
-               .attr("cy", d => yScale(d[y_selection])),
-            exit => exit
-               .remove()
-         )
-         
-      d3.select("#best-fit-line").remove()
-      scatter_plot.append('line')
-         .attr("id", "best-fit-line")
-         .style("stroke", "#E29578")
-         .style("stroke-width", 2)
-         .style("stroke-dasharray", 5)
-         .transition(t)
-         .attr("x1", xScale(regressionPoints[0].x))
-         .attr("y1", yScale(regressionPoints[0].y))
-         .attr("x2", xScale(regressionPoints[1].x))
-         .attr("y2", yScale(regressionPoints[1].y));
-   }
-
-   function drawBarChart() {
-      year = 2015
-      color_filter = 'gdp_per_capita'
-      bar_filter = "happiness_score"
-      dataset[year].sort((a, b) => b[bar_filter] - a[bar_filter])
-      var colorScale = d3.scaleLinear().domain([d3.min(dataset[year], d => d[color_filter]), d3.max(dataset[year], d => d[color_filter])]).range(['#E29578', '#006D77'])
-      var xScale = d3.scaleLinear().domain([0, d3.max(dataset[year], d => d[bar_filter])] ).range([0, getWidth()-margin.right-margin.left])
-      var yScale = d3.scaleBand().domain(d3.map(dataset[year], d => d["Country"]) ).range([0, 1800-margin.top-margin.bottom]).padding(0.4)
-
-      var xAxis = d3.axisBottom()
-      .scale(xScale); 
-      var yAxis = d3.axisLeft()
-      .scale(yScale);
-
-      bar_chart.append("g")
-      .attr("class", "axis")
-      .attr("transform", "translate(0, " + (1800-margin.top-margin.bottom) + ")")
-      .call(xAxis)
-
-      bar_chart.append("g")
-      .attr("class", "axis")
-      .call(yAxis)
-
-      d3.selectAll(".axis > g").remove()
-
-      bar_chart.selectAll("rect")
-         .data(dataset[year])
-         .enter()
-            .append("rect")
-            .attr("x", 0)
-            .attr("y", d => yScale(d["Country"]))
-            .attr("width", d => xScale(d[bar_filter]))
-            .attr("height", yScale.bandwidth())
-            .attr("border", "1px solid black")
-            .attr("fill", d => colorScale(d[color_filter]))
-   }
-
-  async function ready() {
-      // load files async; store the values so we can use them later
-      data = await d3.csv("WorldHappinessData.csv");
-
-      aggregateByYear()
-
-      drawScatterPlot()
-      drawBarChart()
+      drawScatterPlot(scatterVar, dataset) // initialize the scatter plot
+      drawBarChart(dataset) // initialize the bar chart
     }
 
     ready();
