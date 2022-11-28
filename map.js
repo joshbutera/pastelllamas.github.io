@@ -24,7 +24,7 @@ function calcFill(d, yearVal, countryColorScale) {
    var avg = d.happiness_score_avg;
    var allScores = d.happiness_scores;
 
-   if (avg == 0.00) return 'Black';
+   if (avg == 0.00) return 'rgba(175, 175, 175, 0.10';
 
    if (yearVal == 'All Years') {
       return countryColorScale(avg);

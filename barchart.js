@@ -51,4 +51,37 @@ function drawBarChart(barVar, dataset) {
       )
       .enter()
          .append("rect")
+
+   //Append a defs (for definition) element to your SVG
+   d3.selectAll("#defs").remove()
+   var defs = bar_chart.append("defs")
+      .attr("id", "bar-defs");
+
+   //Append a linearGradient element to the defs and give it a unique id
+   var linearGradient = defs.append("linearGradient")
+      .attr("id", "linear-gradient")
+      .attr("x1", "0%")
+      .attr("y1", "0%")
+      .attr("x2", "0%")
+      .attr("y2", "100%")
+   
+   linearGradient.append("stop")
+      .attr("offset", "0%")
+      .attr("stop-color", max_color); //light blue
+
+   //Set the color for the end (100%)
+   linearGradient.append("stop")
+      .attr("offset", "100%")
+      .attr("stop-color", min_color); //dark blue
+   
+   d3.select("#bar-legend").remove()
+   bar_chart.append("rect")
+      .attr("id", "bar-legend")
+      .attr("width", 20)
+      .attr("height", 300)
+      .attr("transform", "translate(" + 1500 + "," + 0 + ")")
+      .style("fill", "url(#linear-gradient)");
+   
+   d3.select("#bar-legend")
+      .text("Max")
 }
