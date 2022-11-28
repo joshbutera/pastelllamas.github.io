@@ -34,6 +34,18 @@ function calcFill(d, yearVal, countryColorScale) {
    }
 }
 
+function getScore(i, yearVal) {
+   var avg = i.happiness_score_avg;
+   var allScores = i.happiness_scores;
+
+   if (yearVal == 'All Years') {
+      return avg.toFixed(2);
+   } else {
+      var cur = Math.abs(2015 - yearVal);
+      return allScores[cur].toFixed(2);
+   }
+}
+
 function drawMap(countries, year) {
    countries.features[238].properties.ADMIN = 'United States'; // rename USA to match in both datasets
 
@@ -80,12 +92,26 @@ function drawMap(countries, year) {
    const pathGenerator = d3.geoPath()
       .projection(projection);
 
+   // create a tooltip
+   var tooltip = d3.select("#map")
+      .append("div")
+      .style("width", "auto")
+      .style("height", "auto")
+      .style("background-color", "white")
+      .style("padding", "5px")
+      .style("border", "solid 1px black")
+      .style("border-radius", "5px")
+      .style("position", "absolute")
+      .style("visibility", "hidden");
+
    world_map.selectAll(".country")
       .data(countries.features)
       .join("path")
       .attr("class", "country")
       .attr("fill", d => calcFill(d, year, countryColorScale))
-      .attr("d", feature => pathGenerator(feature));
+      .attr("d", feature => pathGenerator(feature))
+      .on("mouseover", (d, i) => tooltip.style("visibility", "visible").style("top", d.pageY + "px").style("left", d.pageX + "px").text(i.properties.ADMIN + ", Happiness Score: " + getScore(i, year)))
+      .on("mouseout", d => tooltip.style("visibility", "hidden")); 
 
    //Append a defs (for definition) element to your SVG
    var defs = world_map.append("defs");
