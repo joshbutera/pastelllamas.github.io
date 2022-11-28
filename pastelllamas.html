@@ -41,7 +41,12 @@
          <p> The plot below shows each country's happiness rating on the x-axis, and the average score of your chosen aspect on the y-axis. The dashed line is a linear regression line of best fit - a steeper slope shows a bigger impact.</p>
          Aspect: <select id="scatterSelection" class="dropdown"></select><br>
       </div>
-      <div id="scatter"></div>
+      <div id="scatter">
+         <div id="scatter-contents">
+            <p id="r2"></p>
+
+      </div>
+   </div>
       <div id="post-scatter-text">
          <h3> Which of the aspects actually had the biggest impact?</h3>
          <p> From switching through the different aspects, it can be seen that GDP, health, and family are the biggest contributors with generosity not having much of an impact at all.</p>
@@ -99,7 +104,7 @@
 
    // Initialize the tooltip elements.
    d3.select(".content").append("span").attr("class", "tooltip")
-   var scatter_plot = d3.select("#scatter").append("svg")
+   var scatter_plot = d3.select("#scatter-contents").append("svg")
       .attr("id", "scatter_plot")
       .style("height", raw_height)
       .style("width", raw_width)

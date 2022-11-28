@@ -26,6 +26,11 @@ function drawScatterPlot(scatterVar, dataset) {
       y: linearRegressionLine(d)
    }));
 
+   var rSquared = ss.rSquared(points.map(d => [Number(d.x), Number(d.y)]), linearRegressionLine);
+
+   var tooltip = d3.select("#r2")
+      .text("R Squared: " + rSquared.toFixed(2));
+
    d3.selectAll('.scatter-axis').remove()
    var xAxis = d3.axisBottom()
       .scale(xScale); 
