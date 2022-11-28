@@ -20,7 +20,12 @@ function calcAvgScore(country) {
    }
 }
 
-function calcFill(yearVal, avg, allScores, countryColorScale) {
+function calcFill(d, yearVal, countryColorScale) {
+   var avg = d.happiness_score_avg;
+   var allScores = d.happiness_scores;
+
+   if (avg == 0.00) return 'Black';
+
    if (yearVal == 'All Years') {
       return countryColorScale(avg);
    } else {
@@ -30,9 +35,10 @@ function calcFill(yearVal, avg, allScores, countryColorScale) {
 }
 
 function drawMap(countries, year) {
-   console.log(year)
-
    countries.features[238].properties.ADMIN = 'United States'; // rename USA to match in both datasets
+
+   var max = -1.0;
+   var min = 100.0; 
 
    // add happiness score to geojson data
    for (var i = 0; i < countries.features.length; i++) {
@@ -53,17 +59,17 @@ function drawMap(countries, year) {
          }
       }
 
+      var curMin = d3.min(happiness_scores);
+      var curMax = d3.max(happiness_scores);
+
+      if (curMin != 0 && curMin < min) min = curMin;
+      if (curMax > max) max = curMax;
+
       countries.features[i].happiness_scores = happiness_scores; 
    }
 
-   // create color scale
-   var countriesSubset = countries.features.filter(d => d.happiness_score_avg != 0.0); // remove countries with no happiness score
-
-   const minHappiness = d3.min(countriesSubset, d => d.happiness_score_avg);
-   const maxHappiness = d3.max(countriesSubset, d => d.happiness_score_avg);
-
    const countryColorScale = d3.scaleLinear()
-      .domain([minHappiness, maxHappiness])
+      .domain([min, max])
       .range([min_color, max_color]);
 
    // draw world map
@@ -76,7 +82,6 @@ function drawMap(countries, year) {
       .data(countries.features)
       .join("path")
       .attr("class", "country")
-      //.attr("fill", d => countryColorScale(d.happiness_score_avg))
-      .attr("fill", d => calcFill(year, d.happiness_score_avg, d.happiness_scores, countryColorScale))
+      .attr("fill", d => calcFill(d, year, countryColorScale))
       .attr("d", feature => pathGenerator(feature));
 }
