@@ -125,7 +125,7 @@
    // Checks when the value of the dropdown menu is changed.
    d3.select("#scatterSelection").on("change", function(d) {
       scatterVar = d3.select(this).property("value")
-      drawScatterPlot(scatterVar, dataset)
+      drawScatterPlot(scatterVar, data)
    })
 
    d3.select("#barChartSelection").on("change", function(d) {
@@ -172,7 +172,7 @@
       })
 
       drawMap(countries)
-      drawScatterPlot(scatterVar, dataset) // initialize the scatter plot
+      drawScatterPlot(scatterVar, data) // initialize the scatter plot
       drawMap(countries, mapVar) // initialize the map
       drawBarChart(barVar, dataset) // initialize the bar chart
    }
