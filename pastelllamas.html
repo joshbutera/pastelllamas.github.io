@@ -27,21 +27,18 @@
 <body>
    <div class="content">
       <div id="pre-map-text">
-         <h1> Happiness vs. Corruption</h1>
+         <h1> World Happiness</h1>
          <h2> What is the biggest contributor to happiness?</h2>
-         <p> Using a dataset provided by the world happiness report, we wanted to figure out <span class="bolded">what contributes most to a country's happiness.</span>
-         For each country, a subset of the population was surveyed where each participant would respond with how happy they are - along
-            with what aspects (GDP, family, health, etc.) contribute to that happiness.</p>
-         <h3> That leads us to our first question, how does happiness look across the world?</h3>
-         <p> The map below uses the average happiness score for each country between 2015 and 2020, where (color) is the happiest countries and (color) is the least happy.</p>
+         <p> Using a dataset provided by the World Happiness Report, we wanted to see <span class="bolded">what contributes most to a country's happiness.</span>
+         The dataset comprises of survey responses where each participant rated their happiness (1-10) along
+            with what aspects (GDP, family, health, etc.) contributed to that happiness.</p>
+         <h3> So, how does happiness look across the world?</h3>
          Year: <select id="mapSelection" class="dropdown"></select><br>
       </div>
       <div id="map"></div>
       <div id="pre-scatter-text">
          <h3> So what is actually contributing to the happiness of each of these countries?</h3>
-         <p> As mentioned, surveyors were also asked to respond to what aspects - GDP per capita, family, health ,freedom, generosity, government trust, and corruption - contributed most to their happiness rating.</p>
-         <p> The plot below shows the each country's happiness rating on the x-axis, and the average score of a specified aspect on the y-axis.</p>
-         <p> The dashed line (the line of best fit) shows how much of an impact the aspect has on the happiness rating - a steeper slope shows a bigger impact.</p>
+         <p> The plot below shows each country's happiness rating on the x-axis, and the average score of your chosen aspect on the y-axis. The dashed line is a linear regression line of best fit - a steeper slope shows a bigger impact.</p>
          Aspect: <select id="scatterSelection" class="dropdown"></select><br>
       </div>
       <div id="scatter"></div>
@@ -57,57 +54,7 @@
    </div>
 </body>
 
-<style>
-   .header {
-      position: fixed;
-      overflow: hidden;
-      background-color: #83C5BE;
-      /* padding: 10px 10px; */
-      width: 100%;
-      left: 0px;
-      top: 0px;
-      border-bottom: 2px solid #006D77;
-      
-   }
-   
-   #scatterSelection {
-      margin-top: 100px;
-   }
 
-   .axis > path, .axis > g > line {
-      color: #006D77;
-      stroke-width: 2px;
-   }
-
-   .axis > g > text {
-      color: #006D77;
-      font-size: 12px
-   }
-
-   .header * {
-      display: flex;
-      justify-content: center;
-      color: #006D77;
-      text-align: center;
-      font-family: "Dancing Script", cursive;
-      font-size: 30px;
-   }
-
-   html {
-      background-color: #EDF6F9;
-   }
-   .tooltip {
-      position: relative;
-      background: #83C5BE;
-      border-radius: 3px;
-      border: 1px solid #006D77;
-      padding: 5px;
-      left: 20;
-      visibility: hidden;
-      color: black;
-      font-family: Arial, Helvetica, sans-serif;
-   }
-</style>
 
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="https://unpkg.com/simple-statistics@7.8.0/dist/simple-statistics.min.js"></script>
@@ -147,6 +94,7 @@
    var variableOptions = ["gdp_per_capita", "family", "health", "freedom", "generosity", "government_trust", "cpi_score"]
    let scatterVar = variableOptions[0]
    let barVar = variableOptions[0]
+   let aspectExplanation = ""
 
    const min_color = "#95d5b2",
       max_color = "#081c15"
@@ -213,7 +161,7 @@
    });
 
    var world_map = d3.select("#map").append("svg")
-      .style("height", 750)
+      .style("height", 600)
       .style("width", 1000)
       .append("g").attr("transform", "translate(" + 0 + "," + margin.top + ")")
    
