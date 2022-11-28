@@ -37,7 +37,7 @@ function drawMap(countries) {
 
    const countryColorScale = d3.scaleLinear()
       .domain([minHappiness, maxHappiness])
-      .range(["green", "blue"]);
+      .range([min_color, max_color]);
 
    // draw world map
    const projection = d3.geoMercator();
