@@ -15,7 +15,6 @@
    font-size: 12px
 }
 
-
 .tooltip {
    position: relative;
    background: #83C5BE;
@@ -43,13 +42,24 @@ h1 {
    width: 150px;
 }
 
-#pre-map-text, #pre-scatter-text, #post-scatter-text {
+#pre-map-text, #pre-scatter-text, #post-scatter-text, #pre-bar-text {
    width: 50%;
    margin: auto;
    text-align: center;
 }
 
 #map {
-   width: 50%;
+   /* width: 50%; */
    margin: auto;
+}
+#bar-chart {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+}
+#scatter {
+   display: flex;
+   flex-direction: column;
+   align-content: center;
+   align-items: center;
 }

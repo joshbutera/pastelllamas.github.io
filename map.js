@@ -24,7 +24,7 @@ function calcFill(d, yearVal, countryColorScale) {
    var avg = d.happiness_score_avg;
    var allScores = d.happiness_scores;
 
-   if (avg == 0.00) return 'Black';
+   if (avg == 0.00) return 'rgba(175, 175, 175, 0.10';
 
    if (yearVal == 'All Years') {
       return countryColorScale(avg);
@@ -78,6 +78,8 @@ function drawMap(countries, year) {
       if (curMax > max) max = curMax;
 
       countries.features[i].happiness_scores = happiness_scores; 
+      min = Number(min)
+      max = Number(max)
    }
 
    const countryColorScale = d3.scaleLinear()
@@ -110,4 +112,42 @@ function drawMap(countries, year) {
       .attr("d", feature => pathGenerator(feature))
       .on("mouseover", (d, i) => tooltip.style("visibility", "visible").style("top", d.pageY + "px").style("left", d.pageX + "px").text(i.properties.ADMIN + ", Happiness Score: " + getScore(i, year)))
       .on("mouseout", d => tooltip.style("visibility", "hidden")); 
+
+   //Append a defs (for definition) element to your SVG
+   var defs = world_map.append("defs");
+
+   //Append a linearGradient element to the defs and give it a unique id
+   var linearGradient = defs.append("linearGradient")
+      .attr("id", "linear-gradient")
+      .attr("x1", "0%")
+      .attr("y1", "0%")
+      .attr("x2", "0%")
+      .attr("y2", "100%")
+   
+   linearGradient.append("stop")
+      .attr("offset", "0%")
+      .attr("stop-color", max_color); //light blue
+  
+   //Set the color for the end (100%)
+   linearGradient.append("stop")
+      .attr("offset", "100%")
+      .attr("stop-color", min_color); //dark blue
+   
+   world_map.append("rect")
+      .attr("width", 20)
+      .attr("height", 300)
+      .attr("transform", "translate(" + 1000 + "," + 0 + ")")
+      .style("fill", "url(#linear-gradient)");
+   
+   world_map.append("text")
+      .attr("x", 0)
+      .attr("y", -1030)
+      .attr("transform", "rotate(90)")
+      .text("Most Happy")
+   
+   world_map.append("text")
+      .attr("x", 210)
+      .attr("y", -980)
+      .attr("transform", "rotate(90)")
+      .text("Least Happy")
 }
