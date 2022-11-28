@@ -42,3 +42,14 @@ h1 {
 .dropdown {
    width: 150px;
 }
+
+#pre-map-text, #pre-scatter-text, #post-scatter-text {
+   width: 50%;
+   margin: auto;
+   text-align: center;
+}
+
+#map {
+   width: 50%;
+   margin: auto;
+}
