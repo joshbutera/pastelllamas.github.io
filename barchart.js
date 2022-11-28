@@ -1,6 +1,7 @@
-function drawBarChart(dataset) {
+function drawBarChart(barVar, dataset) {
    year = 2015
-   color_filter = 'gdp_per_capita'
+   color_filter = barVar
+   console.log(color_filter, dataset)
    bar_filter = "happiness_score"
    dataset[year].sort((a, b) => a[bar_filter] - b[bar_filter])
    var colorScale = d3.scaleLinear().domain([d3.min(dataset[year], d => d[color_filter]), d3.max(dataset[year], d => d[color_filter])]).range([min_color, max_color])

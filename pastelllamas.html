@@ -35,6 +35,9 @@
          <h3> Which of the aspects actually had the biggest impact?</h3>
          <p> From switching through the different aspects, it can be seen that GDP, health, and family are the biggest contributors with generosity not having much of an impact at all.</p>
       </div>
+      <div id="bar-chart">
+         Aspect: <select id="barChartSelection" class="dropdown"></select><br>
+      </div>
    </div>
 </body>
 
@@ -75,9 +78,10 @@
 
    var variableOptions = ["gdp_per_capita", "family", "health", "freedom", "generosity", "government_trust", "cpi_score"]
    let scatterVar = variableOptions[0]
+   let barVar = variableOptions[0]
 
-   const min_color = "#E29578",
-      max_color = "#006D77"
+   const min_color = "#95d5b2",
+      max_color = "#081c15"
 
    // Initialize the tooltip elements.
    d3.select(".content").append("span").attr("class", "tooltip")
@@ -95,15 +99,29 @@
     	.append('option')
       .text(function (d) { return d; }) // text showed in the menu
       .attr("value", function (d) { return d; }) // corresponding value returned by the button
+
+   d3.select("#barChartSelection")
+      .selectAll('myOptions')
+     	.data(variableOptions)
+      .enter()
+    	.append('option')
+      .text(function (d) { return d; }) // text showed in the menu
+      .attr("value", function (d) { return d; }) // corresponding value returned by the button
    
    // Checks when the value of the dropdown menu is changed.
    d3.select("#scatterSelection").on("change", function(d) {
       scatterVar = d3.select(this).property("value")
       drawScatterPlot(scatterVar, dataset)
    })
+
+   d3.select("#barChartSelection").on("change", function(d) {
+      barVar = d3.select(this).property("value")
+      drawBarChart(barVar, dataset)
+   })
+
    
    // Initialize the bar chart elements.
-   var bar_chart = d3.select(".content").append("svg")
+   var bar_chart = d3.select("#bar-chart").append("svg")
       .style("height", 600)
       .style("width", getWidth())
       .append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")")
@@ -124,7 +142,7 @@
 
       drawMap(countries)
       drawScatterPlot(scatterVar, dataset) // initialize the scatter plot
-      drawBarChart(dataset) // initialize the bar chart
+      drawBarChart(barVar, dataset) // initialize the bar chart
 
    }
 
