@@ -39,10 +39,18 @@ function getScore(i, yearVal) {
    var allScores = i.happiness_scores;
 
    if (yearVal == 'All Years') {
-      return avg.toFixed(2);
+      if (avg.toFixed(2) == 0.0) {
+         return "No data available"
+      } else {
+         return avg.toFixed(2);
+      }
    } else {
       var cur = Math.abs(2015 - yearVal);
-      return allScores[cur].toFixed(2);
+      if (allScores[cur].toFixed(2) == 0.0) {
+         return "No data available"
+      } else {
+         return allScores[cur].toFixed(2);
+      }
    }
 }
 
