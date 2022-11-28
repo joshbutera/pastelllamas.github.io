@@ -43,7 +43,7 @@ h1 {
    width: 150px;
 }
 
-#pre-map-text, #pre-scatter-text, #post-scatter-text {
+#pre-map-text, #pre-scatter-text, #post-scatter-text, #pre-bar-text {
    width: 50%;
    margin: auto;
    text-align: center;

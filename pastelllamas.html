@@ -49,9 +49,10 @@
          <h3> Which of the aspects actually had the biggest impact?</h3>
          <p> From switching through the different aspects, it can be seen that GDP, health, and family are the biggest contributors with generosity not having much of an impact at all.</p>
       </div>
-      <div id="bar-chart">
+      <div id="pre-bar-text">
          Aspect: <select id="barChartSelection" class="dropdown"></select><br>
       </div>
+      <div id="bar-chart"></div>
    </div>
 </body>
 
@@ -227,7 +228,6 @@
       drawScatterPlot(scatterVar, dataset) // initialize the scatter plot
       drawMap(countries, mapVar) // initialize the map
       drawBarChart(barVar, dataset) // initialize the bar chart
-
    }
 
    ready()
