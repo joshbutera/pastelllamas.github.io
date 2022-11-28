@@ -2,63 +2,30 @@
 <html>
 <meta charset="utf-8">
 
+<head>
+   <link rel="stylesheet" href="style.css">
+</head>
+
 <body>
-   <div class="header">
-      <h2>Happiness vs. Corruption</h2>
-    </div>
    <div class="content">
+      <h1> Happiness vs. Corruption</h1>
+      <h2> What is the biggest contributor to happiness?</h2>
+      <p> Using a dataset provided by the world happiness report, we wanted to figure out what contributes most to a country's happiness.</p> 
+      <p>For each country, a subset of the population was surveyed where each participant would respond with how happy they are - along
+         with what aspects (GDP, family, health, etc.) contribute to that happiness.</p>
+      <h3> That leads us to our first question, how does happiness look across the world?</h3>
+      <p> The map below uses the average happiness score for each country between 2015 and 2020, where (color) is the happiest countries and (color) is the least happy.</p>
+      <div id="map"></div>
+      <h3> So what is actually contributing to the happiness of each of these countries?</h3>
+      <p> As mentioned, surveyors were also asked to respond to what aspects - GDP per capita, family, health ,freedom, generosity, government trust, and corruption - contributed most to their happiness rating.</p>
+      <p> The plot below shows the each country's happiness rating on the x-axis, and the average score of a specified aspect on the y-axis.</p>
+      <p> The dashed line (the line of best fit) shows how much of an impact the aspect has on the happiness rating - a steeper slope shows a bigger impact.</p>
       Aspect: <select id="scatterSelection" class="dropdown"></select><br>
+      <div id="scatter"></div>
+      <h3> Which of the aspects actually had the biggest impact?</h3>
+      <p> From switching through the different aspects, it can be seen that GDP, health, and family are the biggest contributors with generosity not having much of an impact at all.</p>
    </div>
 </body>
-<style>
-   .header {
-      position: fixed;
-      overflow: hidden;
-      background-color: #83C5BE;
-      padding: 10px 10px;
-      width: 100%;
-      left: 0px;
-      top: 0px;
-      border-bottom: 2px solid #006D77;
-   }
-   
-   #scatterSelection {
-      margin-top: 100px;
-   }
-
-   .axis > path, .axis > g > line {
-      color: #006D77;
-      stroke-width: 2px;
-   }
-
-   .axis > g > text {
-      color: #006D77;
-      font-size: 12px
-   }
-
-   .header * {
-      display: flex;
-      justify-content: center;
-      color: #006D77;
-      text-align: center;
-      font-family: Arial, Helvetica, sans-serif;
-   }
-
-   html {
-      background-color: #EDF6F9;
-   }
-   .tooltip {
-      position: relative;
-      background: #83C5BE;
-      border-radius: 3px;
-      border: 1px solid #006D77;
-      padding: 5px;
-      left: 20;
-      visibility: hidden;
-      color: black;
-      font-family: Arial, Helvetica, sans-serif;
-   }
-</style>
 
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="https://unpkg.com/simple-statistics@7.8.0/dist/simple-statistics.min.js"></script>
@@ -103,7 +70,7 @@
 
    // Initialize the tooltip elements.
    d3.select(".content").append("span").attr("class", "tooltip")
-   var scatter_plot = d3.select(".content").append("svg")
+   var scatter_plot = d3.select("#scatter").append("svg")
       .attr("id", "scatter_plot")
       .style("height", raw_height)
       .style("width", raw_width)
@@ -131,8 +98,8 @@
       .append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")")
 
 
-   var world_map = d3.select(".content").append("svg")
-      .style("height", 1800)
+   var world_map = d3.select("#map").append("svg")
+      .style("height", 800)
       .style("width", getWidth())
       .append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")")
    
@@ -144,9 +111,9 @@
          dataset[Number(d['Year'])].push(d) // aggregate data by year
       })
 
+      drawMap(countries)
       drawScatterPlot(scatterVar, dataset) // initialize the scatter plot
       drawBarChart(dataset) // initialize the bar chart
-      drawMap(countries)
 
    }
 
