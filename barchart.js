@@ -16,12 +16,19 @@ function drawBarChart(barVar, dataset) {
 
    d3.selectAll('.bar-axis').remove()
    bar_chart.append("g")
-   .attr("class", "bar-axis")
-   .attr("transform", "translate(0, " + (600-margin.top-margin.bottom) + ")")
-   .call(xAxis)
+      .attr("class", "bar-axis")
+      .attr("transform", "translate(0, " + (600-margin.top-margin.bottom) + ")")
+      .call(xAxis)
 
    bar_chart.append("g")
-   .attr("class", "bar-axis")
+      .attr('id', 'bar-x-axis-label')
+      .attr('transform', 'translate(' + (width/2) + ', ' + (520+35) + ')')
+      .append("text")
+      .attr("text-anchor", "middle")
+      .text("Happiness Score");
+
+   bar_chart.append("g")
+   .attr("class", "bar-y-axis")
    .call(yAxis)
 
    d3.selectAll(".bar-axis > g").remove()
@@ -30,9 +37,6 @@ function drawBarChart(barVar, dataset) {
       .data(dataset[year])
       .join(
          enter => enter.append('rect')
-            .transition()
-            .delay((d, i) => 10 * i)
-            .duration(600)
             .attr("x", d => xScale(d.Country))
             .attr("y", d => yScale(d[bar_filter]))
             .attr("width", xScale.bandwidth())
@@ -79,9 +83,17 @@ function drawBarChart(barVar, dataset) {
       .attr("id", "bar-legend")
       .attr("width", 20)
       .attr("height", 300)
-      .attr("transform", "translate(" + 1500 + "," + 0 + ")")
+      .attr("transform", "translate(" + 1650 + "," + 0 + ")")
       .style("fill", "url(#linear-gradient)");
    
-   d3.select("#bar-legend")
+   bar_chart.append("text")
+      .attr("x", 1645)
+      .attr("y", -10)
       .text("Max")
-}
+   
+   bar_chart.append("text")
+      .attr("x", 1645)
+      .attr("y", 320)
+      .text("Min")
+   }
+   

@@ -56,58 +56,6 @@
    </div>
 </body>
 
-<style>
-   .header {
-      position: fixed;
-      overflow: hidden;
-      background-color: #83C5BE;
-      /* padding: 10px 10px; */
-      width: 100%;
-      left: 0px;
-      top: 0px;
-      border-bottom: 2px solid #006D77;
-      
-   }
-   
-   #scatterSelection {
-      margin-top: 100px;
-   }
-
-   .axis > path, .axis > g > line {
-      color: #006D77;
-      stroke-width: 2px;
-   }
-
-   .axis > g > text {
-      color: #006D77;
-      font-size: 12px
-   }
-
-   .header * {
-      display: flex;
-      justify-content: center;
-      color: #006D77;
-      text-align: center;
-      font-family: "Dancing Script", cursive;
-      font-size: 30px;
-   }
-
-   html {
-      background-color: #EDF6F9;
-   }
-   .tooltip {
-      position: relative;
-      background: #83C5BE;
-      border-radius: 3px;
-      border: 1px solid #006D77;
-      padding: 5px;
-      left: 20;
-      visibility: hidden;
-      color: black;
-      font-family: Arial, Helvetica, sans-serif;
-   }
-</style>
-
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="https://unpkg.com/simple-statistics@7.8.0/dist/simple-statistics.min.js"></script>
 <script src="/scatterplot.js"></script>
@@ -213,7 +161,7 @@
 
    var world_map = d3.select("#map").append("svg")
       .style("height", 750)
-      .style("width", 1000)
+      .style("width", 1050)
       .append("g").attr("transform", "translate(" + 0 + "," + margin.top + ")")
    
    // Ready function to initialize the page.
