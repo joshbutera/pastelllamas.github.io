@@ -8,6 +8,7 @@
     </div>
    <div class="content">
       Aspect: <select id="scatterSelection" class="dropdown"></select><br>
+      Year: <select id="mapSelection" class="dropdown"></select><br>
    </div>
 </body>
 <style>
@@ -130,6 +131,23 @@
       .style("width", getWidth())
       .append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")")
 
+   // dropdown for map visualization 
+   var mapVariableOptions = ["All Years", "2015", "2016", "2017", "2018", "2019", "2020"];
+   let mapVar = mapVariableOptions[0];
+
+   d3.select("#mapSelection")
+      .selectAll('myMapOptions')
+     	.data(mapVariableOptions)
+      .enter()
+    	.append('option')
+      .text(function (d) { return d; }) // text showed in the menu
+      .attr("value", function (d) { return d; }); // corresponding value returned by the button
+   
+   // Checks when the value of the dropdown menu is changed.
+   d3.select("#mapSelection").on("change", function(d) {
+      mapVar = d3.select(this).property("value");
+      drawMap(countries, mapVar);
+   });
 
    var world_map = d3.select(".content").append("svg")
       .style("height", 1800)
@@ -146,7 +164,7 @@
 
       drawScatterPlot(scatterVar, dataset) // initialize the scatter plot
       drawBarChart(dataset) // initialize the bar chart
-      drawMap(countries)
+      drawMap(countries, mapVar) // initialize the map
 
    }
 
