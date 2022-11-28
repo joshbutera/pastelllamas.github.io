@@ -66,6 +66,10 @@ function drawMap(countries, year) {
       if (curMax > max) max = curMax;
 
       countries.features[i].happiness_scores = happiness_scores; 
+      min = Number(min)
+      max = Number(max)
+      
+      console.log(min, max)
    }
 
    const countryColorScale = d3.scaleLinear()
@@ -84,4 +88,30 @@ function drawMap(countries, year) {
       .attr("class", "country")
       .attr("fill", d => calcFill(d, year, countryColorScale))
       .attr("d", feature => pathGenerator(feature));
+
+   //Append a defs (for definition) element to your SVG
+   var defs = world_map.append("defs");
+
+   //Append a linearGradient element to the defs and give it a unique id
+   var linearGradient = defs.append("linearGradient")
+      .attr("id", "linear-gradient")
+      .attr("x1", "0%")
+      .attr("y1", "0%")
+      .attr("x2", "0%")
+      .attr("y2", "100%")
+   
+   linearGradient.append("stop")
+      .attr("offset", "0%")
+      .attr("stop-color", max_color); //light blue
+  
+   //Set the color for the end (100%)
+   linearGradient.append("stop")
+      .attr("offset", "100%")
+      .attr("stop-color", min_color); //dark blue
+   
+   world_map.append("rect")
+      .attr("width", 20)
+      .attr("height", 300)
+      .attr("transform", "translate(" + 980 + "," + 0 + ")")
+      .style("fill", "url(#linear-gradient)");
 }

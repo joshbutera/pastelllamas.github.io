@@ -34,6 +34,7 @@
             with what aspects (GDP, family, health, etc.) contribute to that happiness.</p>
          <h3> That leads us to our first question, how does happiness look across the world?</h3>
          <p> The map below uses the average happiness score for each country between 2015 and 2020, where (color) is the happiest countries and (color) is the least happy.</p>
+         Year: <select id="mapSelection" class="dropdown"></select><br>
       </div>
       <div id="map"></div>
       <div id="pre-scatter-text">
@@ -42,7 +43,6 @@
          <p> The plot below shows the each country's happiness rating on the x-axis, and the average score of a specified aspect on the y-axis.</p>
          <p> The dashed line (the line of best fit) shows how much of an impact the aspect has on the happiness rating - a steeper slope shows a bigger impact.</p>
          Aspect: <select id="scatterSelection" class="dropdown"></select><br>
-      Year: <select id="mapSelection" class="dropdown"></select><br>
       </div>
       <div id="scatter"></div>
       <div id="post-scatter-text">
@@ -142,8 +142,8 @@
    var variableOptions = ["gdp_per_capita", "family", "health", "freedom", "generosity", "government_trust", "cpi_score"]
    let scatterVar = variableOptions[0]
 
-   const min_color = "#E29578",
-      max_color = "#006D77"
+   const min_color = "#ade8f4",
+      max_color = "#023e8a"
 
    // Initialize the tooltip elements.
    d3.select(".content").append("span").attr("class", "tooltip")
@@ -194,7 +194,7 @@
 
    var world_map = d3.select("#map").append("svg")
       .style("height", 750)
-      .style("width", 961)
+      .style("width", 1000)
       .append("g").attr("transform", "translate(" + 0 + "," + margin.top + ")")
    
    // Ready function to initialize the page.
