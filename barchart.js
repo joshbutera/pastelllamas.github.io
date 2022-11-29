@@ -26,7 +26,7 @@ function drawBarChart(barVar, dataset) {
    d3.select('#bar-x-axis-label').remove()
    bar_chart.append("g")
       .attr('id', 'bar-x-axis-label')
-      .attr('transform', 'translate(' + ((width-100)/2) + ', ' + (520+35) + ')')
+      .attr('transform', 'translate(' + ((width)/2) + ', ' + (520+35) + ')')
       .append("text")
       .attr("text-anchor", "middle")
       .text(barVar);
