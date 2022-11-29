@@ -40,16 +40,16 @@ function getScore(i, yearVal) {
 
    if (yearVal == 'All Years') {
       if (avg.toFixed(2) == 0.0) {
-         return "No data available"
+         return ", No data available"
       } else {
-         return avg.toFixed(2);
+         return ", Happiness Score: " + avg.toFixed(2);
       }
    } else {
       var cur = Math.abs(2015 - yearVal);
       if (allScores[cur].toFixed(2) == 0.0) {
-         return "No data available"
+         return ", No data available"
       } else {
-         return allScores[cur].toFixed(2);
+         return ", Happiness Score: " + allScores[cur].toFixed(2);
       }
    }
 }
@@ -118,7 +118,7 @@ function drawMap(countries, year) {
       .attr("class", "country")
       .attr("fill", d => calcFill(d, year, countryColorScale))
       .attr("d", feature => pathGenerator(feature))
-      .on("mouseover", (d, i) => tooltip.style("visibility", "visible").style("top", d.pageY + "px").style("left", d.pageX + "px").text(i.properties.ADMIN + ", Happiness Score: " + getScore(i, year)))
+      .on("mouseover", (d, i) => tooltip.style("visibility", "visible").style("top", d.pageY + "px").style("left", d.pageX + "px").text(i.properties.ADMIN + getScore(i, year)))
       .on("mouseout", d => tooltip.style("visibility", "hidden")); 
 
    //Append a defs (for definition) element to your SVG
