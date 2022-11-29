@@ -10,7 +10,7 @@ function drawBarChart(barVar, dataset) {
    
    var colorScale = d3.scaleLinear().domain([d3.min(dataset[year], d => d[color_filter]), d3.max(dataset[year], d => d[color_filter])]).range([min_color, max_color])
    var yScale = d3.scaleLinear().domain([0, d3.max(dataset[year], d => d[bar_filter])] ).range([600 - margin.top - margin.bottom, 0])
-   var xScale = d3.scaleBand().domain(d3.map(dataset[year], d => d["Country"]) ).range([0, getWidth()-50-margin.right-margin.left]).padding(0.4)
+   var xScale = d3.scaleBand().domain(d3.map(dataset[year], d => d["Country"]) ).range([0, getWidth()-100-margin.right-margin.left]).padding(0.4)
 
    var xAxis = d3.axisBottom()
    .scale(xScale); 
@@ -26,7 +26,7 @@ function drawBarChart(barVar, dataset) {
    d3.select('#bar-x-axis-label').remove()
    bar_chart.append("g")
       .attr('id', 'bar-x-axis-label')
-      .attr('transform', 'translate(' + ((width-50)/2) + ', ' + (520+35) + ')')
+      .attr('transform', 'translate(' + ((width-100)/2) + ', ' + (520+35) + ')')
       .append("text")
       .attr("text-anchor", "middle")
       .text(barVar);
@@ -91,17 +91,19 @@ function drawBarChart(barVar, dataset) {
       .attr("id", "bar-legend")
       .attr("width", 20)
       .attr("height", 300)
-      .attr("transform", "translate(" + 15 + "," + 0 + ")")
+      .attr("transform", "translate(" + 25 + "," + 0 + ")")
       .style("fill", "url(#linear-gradient)");
    
    bar_chart_legend.append("text")
-      .attr("x", 10)
-      .attr("y", -10)
-      .text("Max")
+      .attr("x", 0)
+      .attr("y", -55)
+      .attr("transform", "rotate(90)")
+      .text("Most Happy")
    
    bar_chart_legend.append("text")
-      .attr("x", 10)
-      .attr("y", 320)
-      .text("Min")
+      .attr("x", 210)
+      .attr("y", -5)
+      .attr("transform", "rotate(90)")
+      .text("Least Happy")
    }
    

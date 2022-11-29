@@ -163,12 +163,12 @@
    // Initialize the bar chart elements.
    var bar_chart = d3.select("#bar-chart").append("svg")
       .style("height", 600)
-      .style("width", getWidth()-50)
+      .style("width", getWidth()-100)
       .append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")")
    
    var bar_chart_legend = d3.select("#bar-chart").append("svg")
       .style("height", 600)
-      .style("width", 50)
+      .style("width", 100)
       .append("g").attr("transform", "translate(" + 0 + "," + margin.top + ")")
 
    // dropdown for map visualization 
