@@ -63,7 +63,7 @@ function drawBarChart(barVar, dataset) {
 
    //Append a defs (for definition) element to your SVG
    d3.selectAll("#defs").remove()
-   var defs = bar_chart.append("defs")
+   var defs = bar_chart_legend.append("defs")
       .attr("id", "bar-defs");
 
    //Append a linearGradient element to the defs and give it a unique id
@@ -84,20 +84,20 @@ function drawBarChart(barVar, dataset) {
       .attr("stop-color", min_color); //dark blue
    
    d3.select("#bar-legend").remove()
-   bar_chart.append("rect")
+   bar_chart_legend.append("rect")
       .attr("id", "bar-legend")
       .attr("width", 20)
       .attr("height", 300)
-      .attr("transform", "translate(" + 1650 + "," + 0 + ")")
+      .attr("transform", "translate(" + 15 + "," + 0 + ")")
       .style("fill", "url(#linear-gradient)");
    
-   bar_chart.append("text")
-      .attr("x", 1645)
+   bar_chart_legend.append("text")
+      .attr("x", 10)
       .attr("y", -10)
       .text("Max")
    
-   bar_chart.append("text")
-      .attr("x", 1645)
+   bar_chart_legend.append("text")
+      .attr("x", 10)
       .attr("y", 320)
       .text("Min")
    }

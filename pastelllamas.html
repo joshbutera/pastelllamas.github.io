@@ -52,7 +52,7 @@
          <h3> Which of the aspects actually had the biggest impact?</h3>
          <p> Each bar in this graph is a country. The chosen aspect in the chart is represented by bar height, and is sorted in increasing order. The color of each bar represents happiness. Correlation is strong when taller bars have darker colors.</p>
       </div>
-      <div id="bar-chart">
+      <div id="pre-bar-text">
          <div>Aspect: <select id="barChartSelection" class="dropdown"></select><br></div>
          <p id="aspectInfo2"></p>
       </div>
@@ -80,9 +80,9 @@
          document.body.offsetWidth,
          document.documentElement.offsetWidth,
          document.documentElement.clientWidth
-      )
+      ) - 100
    }
-   var margin = { top: 20, right: 150, bottom: 60, left: 150 };
+   var margin = { top: 20, right: 20, bottom: 60, left: 150 };
    var raw_width = getWidth()
    var raw_height = 600
    var width = raw_width - margin.left - margin.right;
@@ -158,6 +158,11 @@
       .style("height", 600)
       .style("width", getWidth())
       .append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+   
+   var bar_chart_legend = d3.select("#bar-chart").append("svg")
+      .style("height", 600)
+      .style("width", 50)
+      .append("g").attr("transform", "translate(" + 0 + "," + margin.top + ")")
 
    // dropdown for map visualization 
    var mapVariableOptions = ["All Years", "2015", "2016", "2017", "2018", "2019", "2020"];

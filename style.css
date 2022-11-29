@@ -53,11 +53,13 @@ h1 {
    /* width: 50%; */
    margin: auto;
 }
+
 #bar-chart {
    display: flex;
-   flex-direction: column;
+   flex-direction: row;
    align-items: center;
 }
+
 #scatter {
    display: flex;
    flex-direction: column;
