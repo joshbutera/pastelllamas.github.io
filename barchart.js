@@ -1,13 +1,16 @@
 function drawBarChart(barVar, dataset) {
-   var year = 2015
+   var year = 2020
    var color_filter = "happiness_score"
    var bar_filter = variableOptions[barVar]
-   dataset[year].sort((a, b) => a[bar_filter] - b[bar_filter])
    var t = d3.transition()
       .duration(500);
+
+   margin.right = 20
+   dataset[year].sort((a, b) => a[bar_filter] - b[bar_filter])
+   
    var colorScale = d3.scaleLinear().domain([d3.min(dataset[year], d => d[color_filter]), d3.max(dataset[year], d => d[color_filter])]).range([min_color, max_color])
    var yScale = d3.scaleLinear().domain([0, d3.max(dataset[year], d => d[bar_filter])] ).range([600 - margin.top - margin.bottom, 0])
-   var xScale = d3.scaleBand().domain(d3.map(dataset[year], d => d["Country"]) ).range([0, getWidth()-margin.right-margin.left]).padding(0.4)
+   var xScale = d3.scaleBand().domain(d3.map(dataset[year], d => d["Country"]) ).range([0, getWidth()-50-margin.right-margin.left]).padding(0.4)
 
    var xAxis = d3.axisBottom()
    .scale(xScale); 
@@ -23,7 +26,7 @@ function drawBarChart(barVar, dataset) {
    d3.select('#bar-x-axis-label').remove()
    bar_chart.append("g")
       .attr('id', 'bar-x-axis-label')
-      .attr('transform', 'translate(' + (width/2) + ', ' + (520+35) + ')')
+      .attr('transform', 'translate(' + ((width-50)/2) + ', ' + (520+35) + ')')
       .append("text")
       .attr("text-anchor", "middle")
       .text(barVar);

@@ -82,7 +82,7 @@
          document.documentElement.clientWidth
       ) - 100
    }
-   var margin = { top: 20, right: 20, bottom: 60, left: 150 };
+   var margin = { top: 20, right: 100, bottom: 60, left: 100 };
    var raw_width = getWidth()
    var raw_height = 600
    var width = raw_width - margin.left - margin.right;
@@ -156,7 +156,7 @@
    // Initialize the bar chart elements.
    var bar_chart = d3.select("#bar-chart").append("svg")
       .style("height", 600)
-      .style("width", getWidth())
+      .style("width", getWidth()-50)
       .append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")")
    
    var bar_chart_legend = d3.select("#bar-chart").append("svg")

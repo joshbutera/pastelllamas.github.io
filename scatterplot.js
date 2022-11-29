@@ -69,9 +69,9 @@ function drawScatterPlot(scatterVar, dataset) {
       .data(points)
       .join(
          enter => enter.append("circle")
-            .transition()
-            .delay((d, i) => 10 * i)
-            .duration(600)
+            // .transition()
+            // .delay((d, i) => 10 * i)
+            // .duration(600)
             .attr("cx", d => xScale(d.x))
             .attr("cy", d => yScale(d.y))
             .attr("r", 3)
