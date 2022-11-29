@@ -1,5 +1,5 @@
 function drawScatterPlot(scatterVar, dataset) {
-   var y_selection = scatterVar
+   var y_selection = variableOptions[scatterVar]
    var x_selection = 'happiness_score'
    var t = d3.transition()
       .duration(500);
@@ -54,6 +54,15 @@ function drawScatterPlot(scatterVar, dataset) {
    scatter_plot.append("g")
       .attr("class", "scatter-axis")
       .call(yAxis)
+
+   d3.select('#scatter-y-axis-label').remove()
+   scatter_plot.append("g")
+      .attr("id", "scatter-y-axis-label")
+      .attr('transform', 'translate(' + -30 + ', ' + height/2 + ')')
+      .append('text')
+         .attr('text-anchor', 'middle')
+         .attr('transform', 'rotate(-90)')
+         .text(scatterVar)
 
    d3.selectAll(".scatter-axis > g").remove()
    d3.select("#scatter-x-axis-label").remove()
