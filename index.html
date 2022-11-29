@@ -83,9 +83,9 @@
 
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="https://unpkg.com/simple-statistics@7.8.0/dist/simple-statistics.min.js"></script>
-<script src="/scatterplot.js"></script>
-<script src="/barchart.js"></script>
-<script src="/map.js"></script>
+<script src="scatterplot.js"></script>
+<script src="barchart.js"></script>
+<script src="map.js"></script>
 
 <script>
    // Open up on a map of the world with circles representing happiness for each country in the report
@@ -207,8 +207,8 @@
    
    // Ready function to initialize the page.
    async function ready() {
-      data = await d3.csv("WorldHappinessData.csv"); // load csv data
-      countries = await d3.json("countries.geojson");
+      data = await d3.csv("data/WorldHappinessData.csv"); // load csv data
+      countries = await d3.json("data/countries.geojson");
       data.forEach(d => {
          dataset[Number(d['Year'])].push(d) // aggregate data by year
       })
