@@ -75,13 +75,13 @@ function drawScatterPlot(scatterVar, dataset) {
             .attr("cx", d => xScale(d.x))
             .attr("cy", d => yScale(d.y))
             .attr("r", 3)
-            .attr("fill", "#006D77"),
+            .attr("fill", "#588157"),
          update => update
             .transition(t)
             .attr("cx", d => xScale(d.x))
             .attr("cy", d => yScale(d.y))
             .attr("r", 3)
-            .attr("fill", "#006D77"),
+            .attr("fill", "#588157"),
          exit => exit
             .remove()
       )

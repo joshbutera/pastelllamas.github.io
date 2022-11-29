@@ -105,7 +105,7 @@
       "CPI Score": "cpi_score"
    }
    let scatterVar = "gdp_per_capita"
-   let barVar = "gdp_per_capita"
+   let barVar = "GDP Per Capita"
    let aspectExplanation = {"gdp_per_capita": "The extent to which GDP (gross domestic product) contributes to the calculation", "family": "The extent to which family life contributes to the calculation", "health": "The extent to which life expectancy contributed to the calculation", "freedom": "The extent to which personal freedom contributed to the calculation", "generosity": "A numerical value calculated based on participants' perceptions of generosity", "government_trust": "The extent to which perception of corruption contributed to the calculation", "cpi_score": "Corruption perception index, where 0 is extreme corruption and 100 is no corruption"}
    d3.select("#aspectInfo").text(aspectExplanation[scatterVar])
    d3.select("#aspectInfo2").text(aspectExplanation[barVar])
@@ -147,7 +147,7 @@
    })
 
    d3.select("#barChartSelection").on("change", function(d) {
-      barVar = variableOptions[d3.select(this).property("value")]
+      barVar = d3.select(this).property("value")
       d3.select("#aspectInfo2").text(aspectExplanation[barVar])
       drawBarChart(barVar, dataset)
    })

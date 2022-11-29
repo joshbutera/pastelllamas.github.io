@@ -1,7 +1,7 @@
 function drawBarChart(barVar, dataset) {
    var year = 2015
    var color_filter = "happiness_score"
-   var bar_filter = barVar
+   var bar_filter = variableOptions[barVar]
    dataset[year].sort((a, b) => a[bar_filter] - b[bar_filter])
    var t = d3.transition()
       .duration(500);
@@ -20,12 +20,13 @@ function drawBarChart(barVar, dataset) {
       .attr("transform", "translate(0, " + (600-margin.top-margin.bottom) + ")")
       .call(xAxis)
 
+   d3.select('#bar-x-axis-label').remove()
    bar_chart.append("g")
       .attr('id', 'bar-x-axis-label')
       .attr('transform', 'translate(' + (width/2) + ', ' + (520+35) + ')')
       .append("text")
       .attr("text-anchor", "middle")
-      .text("Happiness Score");
+      .text(barVar);
 
    d3.selectAll('.bar-y-axis').remove()
    bar_chart.append("g")
