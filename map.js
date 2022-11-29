@@ -46,10 +46,10 @@ function getScore(i, yearVal) {
       }
    } else {
       var cur = Math.abs(2015 - yearVal);
-      if (allScores[cur].toFixed(2) == 0.0) {
+      if (avg.toFixed(2) == 0.0) {
          return ", No data available"
       } else {
-         return ", Happiness Score: " + allScores[cur].toFixed(2);
+         return ", Happiness Score: " + Number(allScores[cur]).toFixed(2);
       }
    }
 }
