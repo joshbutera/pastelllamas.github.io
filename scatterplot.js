@@ -91,16 +91,27 @@ function drawScatterPlot(scatterVar, dataset) {
          exit => exit
             .remove()
       )
-      
-   d3.select("#best-fit-line").remove()
-   scatter_plot.append('line')
+
+   scatter_plot.selectAll('line')
+      .data(regressionPoints)
+      .join(
+         enter => enter.append('line')
+            .transition(t)
+            .attr("x1", xScale(regressionPoints[0].x))
+            .attr("y1", yScale(regressionPoints[0].y))
+            .attr("x2", xScale(regressionPoints[1].x))
+            .attr("y2", yScale(regressionPoints[1].y)),
+         update => update
+            .transition(t)
+            .attr("x1", xScale(regressionPoints[0].x))
+            .attr("y1", yScale(regressionPoints[0].y))
+            .attr("x2", xScale(regressionPoints[1].x))
+            .attr("y2", yScale(regressionPoints[1].y)),
+         exit => exit
+            .remove()
+      )
       .attr("id", "best-fit-line")
       .style("stroke", "#E29578")
       .style("stroke-width", 2)
       .style("stroke-dasharray", 5)
-      .transition(t)
-      .attr("x1", xScale(regressionPoints[0].x))
-      .attr("y1", yScale(regressionPoints[0].y))
-      .attr("x2", xScale(regressionPoints[1].x))
-      .attr("y2", yScale(regressionPoints[1].y));
 }

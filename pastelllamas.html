@@ -185,7 +185,7 @@
 
    // dropdown for map visualization 
    var mapVariableOptions = ["All Years", "2015", "2016", "2017", "2018", "2019", "2020"];
-   let mapVar = mapVariableOptions[0];
+   var mapVar = mapVariableOptions[0];
 
    d3.select("#mapSelection")
       .selectAll('myMapOptions')
@@ -214,9 +214,8 @@
          dataset[Number(d['Year'])].push(d) // aggregate data by year
       })
 
-      drawMap(countries)
       drawScatterPlot(scatterVar, data) // initialize the scatter plot
-      drawMap(countries, mapVar) // initialize the map
+      drawMap(countries, "All Years") // initialize the map
       drawBarChart(barVar, dataset) // initialize the bar chart
    }
 
