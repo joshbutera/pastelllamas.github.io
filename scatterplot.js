@@ -80,7 +80,8 @@ function drawScatterPlot(scatterVar, dataset) {
             .transition(t)
             .attr("cx", d => xScale(d.x))
             .attr("cy", d => yScale(d.y))
-            .attr("r", 3),
+            .attr("r", 3)
+            .attr("fill", "#006D77"),
          exit => exit
             .remove()
       )

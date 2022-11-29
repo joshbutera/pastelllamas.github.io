@@ -1,7 +1,7 @@
 function drawBarChart(barVar, dataset) {
    var year = 2015
-   var color_filter = barVar
-   var bar_filter = "happiness_score"
+   var color_filter = "happiness_score"
+   var bar_filter = barVar
    dataset[year].sort((a, b) => a[bar_filter] - b[bar_filter])
    var t = d3.transition()
       .duration(500);
@@ -27,6 +27,7 @@ function drawBarChart(barVar, dataset) {
       .attr("text-anchor", "middle")
       .text("Happiness Score");
 
+   d3.selectAll('.bar-y-axis').remove()
    bar_chart.append("g")
    .attr("class", "bar-y-axis")
    .call(yAxis)
@@ -45,6 +46,9 @@ function drawBarChart(barVar, dataset) {
             .attr("fill", d => colorScale(d[color_filter])),
          update => update
             .transition(t)
+            .attr("x", d => xScale(d.Country))
+            .attr("height", d => 600-margin.top-margin.bottom - yScale(d[bar_filter]))
+            .attr("y", d => yScale(d[bar_filter]))
             .attr("fill", function(d) { 
                console.log('test')
                return colorScale(d[color_filter])

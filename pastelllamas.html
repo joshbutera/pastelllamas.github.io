@@ -96,9 +96,16 @@
       2020: []
    }
 
-   var variableOptions = ["gdp_per_capita", "family", "health", "freedom", "generosity", "government_trust", "cpi_score"]
-   let scatterVar = variableOptions[0]
-   let barVar = variableOptions[0]
+   var variableOptions = {"GDP Per Capita": "gdp_per_capita", 
+      "Family": "family", 
+      "Health": "health", 
+      "Freedom": "freedom", 
+      "Generosity": "generosity", 
+      "Government Trust": "government_trust", 
+      "CPI Score": "cpi_score"
+   }
+   let scatterVar = "gdp_per_capita"
+   let barVar = "gdp_per_capita"
    let aspectExplanation = {"gdp_per_capita": "The extent to which GDP (gross domestic product) contributes to the calculation", "family": "The extent to which family life contributes to the calculation", "health": "The extent to which life expectancy contributed to the calculation", "freedom": "The extent to which personal freedom contributed to the calculation", "generosity": "A numerical value calculated based on participants' perceptions of generosity", "government_trust": "The extent to which perception of corruption contributed to the calculation", "cpi_score": "Corruption perception index, where 0 is extreme corruption and 100 is no corruption"}
    d3.select("#aspectInfo").text(aspectExplanation[scatterVar])
 
@@ -116,7 +123,7 @@
    // Initialize the dropdown menu elements.
    d3.select("#scatterSelection")
       .selectAll('myOptions')
-     	.data(variableOptions)
+     	.data(Object.keys(variableOptions))
       .enter()
     	.append('option')
       .text(function (d) { return d; }) // text showed in the menu
@@ -124,7 +131,7 @@
 
    d3.select("#barChartSelection")
       .selectAll('myOptions')
-     	.data(variableOptions)
+     	.data(Object.keys(variableOptions))
       .enter()
     	.append('option')
       .text(function (d) { return d; }) // text showed in the menu
@@ -132,13 +139,14 @@
    
    // Checks when the value of the dropdown menu is changed.
    d3.select("#scatterSelection").on("change", function(d) {
-      scatterVar = d3.select(this).property("value")
+      scatterVar = variableOptions[d3.select(this).property("value")]
+      console.log(scatterVar)
       d3.select("#aspectInfo").text(aspectExplanation[scatterVar])
       drawScatterPlot(scatterVar, data)
    })
 
    d3.select("#barChartSelection").on("change", function(d) {
-      barVar = d3.select(this).property("value")
+      barVar = variableOptions[d3.select(this).property("value")]
       drawBarChart(barVar, dataset)
    })
 
