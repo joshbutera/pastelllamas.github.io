@@ -3,7 +3,6 @@ function drawScatterPlot(scatterVar, dataset) {
    var x_selection = 'happiness_score'
    var t = d3.transition()
       .duration(500);
-   console.log(dataset)
    var points = d3.map(dataset, function(d) { 
       if (Number(d[y_selection]) != 0) {
          return {
@@ -18,8 +17,6 @@ function drawScatterPlot(scatterVar, dataset) {
    points = points.filter(function(d) {
       return d !== undefined;
    })
-
-   console.log(points)
 
    var xScale = d3.scaleLinear().domain([0, d3.max(points, d => d.x)] ).range([0, width])
    var yScale = d3.scaleLinear().domain([0, d3.max(points, d => d.y)] ).range([height, 0])
