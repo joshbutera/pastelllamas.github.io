@@ -1,21 +1,30 @@
 function drawScatterPlot(scatterVar, dataset) {
-   var year = 2015
    var y_selection = scatterVar
-   var x_slection = 'happiness_score'
+   var x_selection = 'happiness_score'
    var t = d3.transition()
       .duration(500);
-   var points = d3.map(dataset[year], function(d) { 
-      return {
-         x: d[x_slection],
-         y: d[y_selection],
-         'country': d['Country']
+   console.log(dataset)
+   var points = d3.map(dataset, function(d) { 
+      if (Number(d[y_selection]) != 0) {
+         return {
+            x: Number(d[x_selection]),
+            y: Number(d[y_selection]),
+            'country': d['Country'],
+            'year': d['Year']
+         }
       }
    })
+
+   points = points.filter(function(d) {
+      return d !== undefined;
+   })
+
+   console.log(points)
 
    var xScale = d3.scaleLinear().domain([0, d3.max(points, d => d.x)] ).range([0, width])
    var yScale = d3.scaleLinear().domain([0, d3.max(points, d => d.y)] ).range([height, 0])
 
-   var linearRegression = ss.linearRegression(points.map(d => [Number(d.x), Number(d.y)]))
+   var linearRegression = ss.linearRegression(d3.map(points, d=> [Number(d.x), Number(d.y)]))
    var linearRegressionLine = ss.linearRegressionLine(linearRegression)
    var x_intercept =  d3.max([Number(points[0].x) - (linearRegressionLine( Number(points[0].x)) / linearRegression.m), 0])
 
@@ -60,21 +69,6 @@ function drawScatterPlot(scatterVar, dataset) {
       .data(points)
       .join(
          enter => enter.append("circle")
-            .on("mouseover", function(event, d) {
-               console.log(event)
-               d3.select(this).attr("fill", "#E29578")
-               console.log(yScale(d.y))
-               d3.select(".tooltip")
-                  .style("top", (event.pageY-160)+"px")
-                  .style("left",(event.pageX)+"px")
-                  .style('visibility', 'visible')
-                  .text(d.country)
-            })
-            .on("mouseout", function(event, d) {
-               d3.select(this).attr("fill", "#006D77")
-               d3.select(".tooltip")
-                  .style('visibility', 'hidden')
-            })
             .transition()
             .delay((d, i) => 10 * i)
             .duration(600)
@@ -85,7 +79,8 @@ function drawScatterPlot(scatterVar, dataset) {
          update => update
             .transition(t)
             .attr("cx", d => xScale(d.x))
-            .attr("cy", d => yScale(d.y)),
+            .attr("cy", d => yScale(d.y))
+            .attr("r", 3),
          exit => exit
             .remove()
       )
