@@ -5,13 +5,21 @@ function drawScatterPlot(scatterVar, dataset) {
       .duration(500);
    console.log(dataset)
    var points = d3.map(dataset, function(d) { 
-      return {
-         x: Number(d[x_selection]),
-         y: Number(d[y_selection]),
-         'country': d['Country'],
-         'year': d['Year']
+      if (Number(d[y_selection]) != 0) {
+         return {
+            x: Number(d[x_selection]),
+            y: Number(d[y_selection]),
+            'country': d['Country'],
+            'year': d['Year']
+         }
       }
    })
+
+   points = points.filter(function(d) {
+      return d !== undefined;
+   })
+
+   console.log(points)
 
    var xScale = d3.scaleLinear().domain([0, d3.max(points, d => d.x)] ).range([0, width])
    var yScale = d3.scaleLinear().domain([0, d3.max(points, d => d.y)] ).range([height, 0])
@@ -61,21 +69,6 @@ function drawScatterPlot(scatterVar, dataset) {
       .data(points)
       .join(
          enter => enter.append("circle")
-            .on("mouseover", function(event, d) {
-               console.log(event)
-               d3.select(this).attr("fill", "#E29578")
-               console.log(yScale(d.y))
-               d3.select(".tooltip")
-                  .style("top", (event.pageY-160)+"px")
-                  .style("left",(event.pageX)+"px")
-                  .style('visibility', 'visible')
-                  .text(d.country)
-            })
-            .on("mouseout", function(event, d) {
-               d3.select(this).attr("fill", "#006D77")
-               d3.select(".tooltip")
-                  .style('visibility', 'hidden')
-            })
             .transition()
             .delay((d, i) => 10 * i)
             .duration(600)
@@ -86,7 +79,8 @@ function drawScatterPlot(scatterVar, dataset) {
          update => update
             .transition(t)
             .attr("cx", d => xScale(d.x))
-            .attr("cy", d => yScale(d.y)),
+            .attr("cy", d => yScale(d.y))
+            .attr("r", 3),
          exit => exit
             .remove()
       )
