@@ -42,7 +42,7 @@ h1 {
    width: 150px;
 }
 
-#pre-map-text, #pre-scatter-text, #post-scatter-text, #pre-bar-text {
+#pre-map-text, #pre-scatter-text, #post-scatter-text, #pre-bar-text, #post-bar-text {
    width: 50%;
    margin: auto;
    text-align: center;
@@ -76,4 +76,8 @@ h1 {
 }
 #aspectInfo, #aspectInfo2{
    font-size: 12px;
+}
+
+.spacing {
+   padding: 40px;
 }

@@ -1,5 +1,5 @@
 function drawBarChart(barVar, dataset) {
-   var year = 2020
+   var year = 2015
    var color_filter = "happiness_score"
    var bar_filter = variableOptions[barVar]
    var t = d3.transition()
